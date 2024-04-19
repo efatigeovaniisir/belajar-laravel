@@ -20,17 +20,23 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/login',[LoginController::class,'login'])->name('login');
+Route::post('/login-proses',[LoginController::class,'login_proses'])->name('login-proses');
+Route::get('/logout',[LoginController::class,'logout'])->name('logout');
 
-Route::get('/',[HomeController::class,'dashboard'])->name('dashboard');
+Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.'] , function(){
+    Route::get('/dashboard',[HomeController::class,'dashboard'])->name('dashboard');
 
-Route::get('/user',[HomeController::class,'index'])->name('index');
+    Route::get('/user',[HomeController::class,'index'])->name('index');
+    
+    Route::get('/create',[HomeController::class,'create'])->name('create');
+    
+    Route::post('/store',[HomeController::class,'store'])->name('store');
+    
+    Route::get('/edit{id}',[HomeController::class,'edit'])->name('edit');
+    
+    Route::put('/update{id}',[HomeController::class,'update'])->name('update');
+    
+    Route::delete('/delete{id}',[HomeController::class,'delete'])->name('delete');
+    
+});
 
-Route::get('/create',[HomeController::class,'create'])->name('create');
-
-Route::post('/store',[HomeController::class,'store'])->name('store');
-
-Route::get('/edit{id}',[HomeController::class,'edit'])->name('edit');
-
-Route::put('/update{id}',[HomeController::class,'update'])->name('update');
-
-Route::delete('/delete{id}',[HomeController::class,'delete'])->name('delete');
