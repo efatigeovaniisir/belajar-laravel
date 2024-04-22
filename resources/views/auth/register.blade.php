@@ -19,7 +19,7 @@
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="{{ route('login') }}" class="h1" style="color:rgb(0, 0, 171)"><b>REGISTER</b></a>
+      <a href="{{ route('register') }}" class="h1" style="color:rgb(0, 0, 171)"><b>REGISTER</b></a>
     </div>
     <div class="card-body">
       <p class="login-box-msg">Silahkan Register untuk Login</p>
@@ -27,7 +27,7 @@
       <form action="{{ route ('register-proses') }}" method="post">
         @csrf
         <div class="input-group mb-3">
-            <input type="text" name="nama" class="form-control" placeholder="Nama Lengkap" value="{{ old('nama') }}">
+            <input type="text" name="nama" class="form-control" placeholder="Nama Lengkap" value="{{ old('name') }}">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-user"></span>
