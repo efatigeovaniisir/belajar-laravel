@@ -22,12 +22,12 @@
       <a href="{{ route('register') }}" class="h1" style="color:rgb(0, 0, 171)"><b>REGISTER</b></a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">Silahkan Register untuk Login</p>
+      <p class="login-box-msg">Silahkan Melakukan Register</p>
 
       <form action="{{ route ('register-proses') }}" method="post">
         @csrf
         <div class="input-group mb-3">
-            <input type="text" name="nama" class="form-control" placeholder="Nama Lengkap" value="{{ old('name') }}">
+            <input type="text" name="name" class="form-control" placeholder="Nama Lengkap" value="{{ old('name') }}">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-user"></span>

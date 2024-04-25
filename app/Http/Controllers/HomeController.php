@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator as FacadesValidator;
+use Illuminate\Support\Facades\Storage;
+
 
 
 class HomeController extends Controller
@@ -33,6 +35,9 @@ class HomeController extends Controller
             $validator = FacadesValidator::make(
                 $request->all(),
                 [
+                    'photo' => 'required|mimes:png,jpg,jpeg|max:2048',
+                ],
+                [
                     'email' => 'required|email',
                 ],
                 [
@@ -44,25 +49,35 @@ class HomeController extends Controller
             );
     
             if($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
-                    
+            
+                $photo = $request->file('photo');
+                $filename = date('y-m-d').$photo->getClientOriginalName();
+                $path = 'photo-user/'.$filename;
+
+                Storage::disk('public')->put($path,file_get_contents($photo));
+
                     $data['email'] = $request->email;
                     $data['name'] = $request->nama;
                     $data['password'] = \Hash::make($request->password); 
+                    $data['image'] = $filename;
     
                     User::create($data);
-            return redirect()->route('index');
+            return redirect()->route('admin.index');
         }
     }
 
     public function edit(Request $request,$id){
         $data = User::find($id);
 
-        return view('edit', compact('data'));
+        return view('admin.edit', compact('data'));
     }
 
     public function update(Request $request, $id){
         $validator = FacadesValidator::make(
             $request->all(),
+            [
+                'photo' => 'required|mimes:png,jpg,jpeg|max:2048',
+            ],
             [
                 'email' => 'required|email',
             ],
@@ -85,7 +100,7 @@ class HomeController extends Controller
                  
 
                 User::whereId($id)->update($data);
-        return redirect()->route('index');
+        return redirect()->route('admin.index');
     }
 
     public function delete(Request $request,$id){
@@ -96,7 +111,7 @@ class HomeController extends Controller
             $data->delete();
         }
 
-        return redirect()->route('index');
+        return redirect()->route('admin.index');
     }
 }
     

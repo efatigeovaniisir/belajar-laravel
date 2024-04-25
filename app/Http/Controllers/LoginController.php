@@ -47,14 +47,14 @@ class LoginController extends Controller
             'email'  => 'required|email|unique:users,email',
             'password'  => 'required|min:6'
         ]);
- 
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => \Hash::make($request->password),
-        ];
-
-        $user = User::create($data);
+        
+        $data = new User();
+        $data->name = $request->name;
+        $data->email = $request->email;
+        $data->password = \Hash::make($request->password);
+       
+        $data->save();
+        
 
        return redirect()->route('login')->with('success', 'Registration successful!');
 
