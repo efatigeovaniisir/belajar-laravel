@@ -18,11 +18,17 @@ class HomeController extends Controller
         return view('dashboard');
     }
 
-    public function index(){
+    public function index(Request $request){
 
-        $data = User::get();
+        $data = new User;
 
-        return view('index',compact('data'));
+        if($request->get('search')){
+            $data = $data->where('name','LIKE','%'.$request->get('search').'%');
+        }
+
+        $data = $data->get();
+
+        return view('index',compact('data', 'request'));
     }
 
     public function create(){
